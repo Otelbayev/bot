@@ -1,9 +1,9 @@
 import TelegramBot from "node-telegram-bot-api";
 
-const token = "8099275705:AAESdauszIWDn-g_4wqxdXDK2RPhflsgvOk";
+const token = "8443715913:AAE1UtcUhQiA5VTXyc803EkNG1zMaeL6cik";
 const bot = new TelegramBot(token, { polling: true });
 
-const requiredChannels = ["forcheckingb"];
+const requiredChannels = ["foydaliaipply"];
 
 bot.onText(/\/start/, async (msg) => {
   const chatId = msg.chat.id;
@@ -28,15 +28,14 @@ bot.onText(/\/start/, async (msg) => {
     if (allSubscribed) {
       bot.sendMessage(
         chatId,
-        "✅ Rahmat! Siz barcha kanallarga obuna bo‘lgansiz.\nEndi botdan foydalanishingiz mumkin 🎉"
+        "🎉 Tabriklaymiz! Siz kanalimizga muvaffaqiyatli obuna bo‘ldingiz. Endi siz @foydaliaipply kanali orqali eng foydali postlar, AI bo‘yicha maslahatlar va ta’limga oid yangiliklarni birinchilardan bo‘lib olasiz 🚀"
       );
     } else {
-      const text =
-        "❌ Botdan foydalanishdan oldin quyidagi kanallarga obuna bo‘ling:\n\n";
+      const text = "Foydali Aipply kanaliga obuna bo‘ling:\n\n";
 
       const buttons = requiredChannels.map((ch) => [
         {
-          text: `📢 ${ch} kanaliga obuna bo‘lish`,
+          text: `📢 Obuna bo‘lish`,
           url: `https://t.me/${ch}`,
         },
       ]);
@@ -83,13 +82,30 @@ bot.on("callback_query", async (query) => {
       if (allSubscribed) {
         bot.sendMessage(
           chatId,
-          "✅ Rahmat! Siz barcha kanallarga obuna bo‘lgansiz.\nEndi botdan foydalanishingiz mumkin 🎉"
+          "🎉 Tabriklaymiz! Siz kanalimizga muvaffaqiyatli obuna bo‘ldingiz. Endi siz @foydaliaipply kanali orqali eng foydali postlar, AI bo‘yicha maslahatlar va ta’limga oid yangiliklarni birinchilardan bo‘lib olasiz 🚀"
         );
       } else {
-        bot.sendMessage(
-          chatId,
-          "🚫 Siz hali barcha kanallarga obuna bo‘lmagansiz!\nIltimos, avval barcha kanallarga obuna bo‘ling va keyin qayta tekshirib ko‘ring."
-        );
+        const text = "🚫 Siz hali kanalga obuna bo‘lmagansiz!\n\n";
+
+        const buttons = requiredChannels.map((ch) => [
+          {
+            text: `📢 Obuna bo‘lish`,
+            url: `https://t.me/${ch}`,
+          },
+        ]);
+
+        buttons.push([
+          {
+            text: "✅ Obuna bo‘ldim",
+            callback_data: "check_subscription",
+          },
+        ]);
+
+        bot.sendMessage(chatId, text, {
+          reply_markup: {
+            inline_keyboard: buttons,
+          },
+        });
       }
     } catch (err) {
       console.error(err);
